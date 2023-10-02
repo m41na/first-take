@@ -1,0 +1,66 @@
+plugins {
+    id 'groovy'
+    id "org.flywaydb.flyway" version "8.5.13"
+    id "org.liquibase.gradle" version "2.2.0"
+}
+
+group = 'works.hop.first'
+version = '1.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.apache.groovy:groovy-all:4.0.6'
+
+    // database
+    runtimeOnly 'com.h2database:h2:2.1.210'
+    implementation 'com.zaxxer:HikariCP:4.0.3'
+
+    // json
+    implementation 'jakarta.json:jakarta.json-api:2.0.1'
+    implementation 'org.glassfish:jakarta.json:2.0.1'
+
+    // logging
+    implementation 'org.slf4j:slf4j-api:2.0.9'
+    implementation 'ch.qos.logback:logback-core:1.4.11'
+    implementation 'ch.qos.logback:logback-classic:1.4.11'
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    // testing
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.assertj:assertj-core:3.24.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes "Main-Class": "works.hop.entity.TodosRepo"
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from {
+        configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+// we need to build classes before we can migrate
+flywayMigrate.dependsOn classes

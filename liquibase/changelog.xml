@@ -1,0 +1,16 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="maina (generated)" id="1695731197135-1">
+        <createTable tableName="TBL_TODOS">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="CONSTRAINT_C"/>
+            </column>
+            <column name="TASK" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="COMPLETED" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
